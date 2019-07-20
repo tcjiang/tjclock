@@ -1,23 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:background="@android:color/black"
-    android:gravity="center"
-    android:layout_height="match_parent">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@color/background"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/tjClockTextView"
-        android:layout_width="match_parent"
-        android:layout_height="170dp"
-        android:gravity="center"
-        android:textColor="#ff3c00"
-        android:textSize="100sp" />
+    <ViewFlipper
+        android:id="@+id/viewflipper"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_margin="6dp" >
 
-    <TextView
-        android:id="@+id/tjClockAmPmView"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:gravity="center"
-        android:textColor="#ff3c00"
-        android:textSize="50sp" />
+        <LinearLayout
+            android:orientation="vertical" android:layout_width="match_parent"
+            android:background="@color/background"
+            android:gravity="center"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tjClockTextView"
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                android:gravity="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="100sp" />
+
+            <TextView
+                android:id="@+id/tjClockAmPmView"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:gravity="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="50sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical" android:layout_width="match_parent"
+            android:background="@color/background"
+            android:gravity="center"
+            android:layout_height="match_parent">
+            <com.iigo.library.ClockView
+                android:id="@+id/clockView"
+                app:minute_hand_color="@color/colorPrimary"
+                app:hour_hand_color="@color/colorPrimary"
+                app:center_point_color="@color/colorPrimary"
+                app:ear_color="@color/background"
+                app:edge_color="@color/colorPrimary"
+                app:foot_color="@color/background"
+                app:head_color="@color/background"
+                app:scale_color="@color/colorPrimary"
+                app:second_hand_color="@color/colorPrimary"
+                android:layout_centerInParent="true"
+                android:layout_width="400dp"
+                android:layout_height="400dp" />
+        </LinearLayout>
+    </ViewFlipper>
 </LinearLayout>
