@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.MotionEvent;
 import android.widget.ViewFlipper;
 import android.widget.TextView;
+import android.view.WindowManager.LayoutParams;
 import android.os.Bundle;
 
 import java.util.Calendar;
@@ -26,6 +27,7 @@ public class MainActivity extends Activity  {
         final TextView timeView = findViewById(R.id.tjClockTextView);
         final TextView ampmView = findViewById(R.id.tjClockAmPmView);
         viewFlipper = findViewById(R.id.viewflipper);
+        getWindow().addFlags(LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         clockView = findViewById(R.id.clockView);
         clockHelper = new ClockHelper(clockView);
