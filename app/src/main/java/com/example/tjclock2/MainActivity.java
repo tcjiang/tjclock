@@ -4,8 +4,9 @@ import android.app.Activity;
 import android.view.MotionEvent;
 import android.widget.ViewFlipper;
 import android.widget.TextView;
-import android.view.WindowManager.LayoutParams;
 import android.os.Bundle;
+import android.view.Window;
+import android.view.WindowManager;
 
 import java.util.Calendar;
 import java.util.Timer;
@@ -27,7 +28,8 @@ public class MainActivity extends Activity  {
         final TextView timeView = findViewById(R.id.tjClockTextView);
         final TextView ampmView = findViewById(R.id.tjClockAmPmView);
         viewFlipper = findViewById(R.id.viewflipper);
-        getWindow().addFlags(LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        getWindow().setDimAmount(0.9f);
 
         clockView = findViewById(R.id.clockView);
         clockHelper = new ClockHelper(clockView);
@@ -54,7 +56,6 @@ public class MainActivity extends Activity  {
     // Using the following method, we will handle all screen swaps.
     public boolean onTouchEvent(MotionEvent touchevent) {
         switch (touchevent.getAction()) {
-
             case MotionEvent.ACTION_DOWN:
                 lastX = touchevent.getX();
                 break;
