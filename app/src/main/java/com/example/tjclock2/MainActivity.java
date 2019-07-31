@@ -5,8 +5,11 @@ import android.view.MotionEvent;
 import android.widget.ViewFlipper;
 import android.widget.TextView;
 import android.os.Bundle;
-import android.view.Window;
-import android.view.WindowManager;
+import android.content.Intent;
+import android.net.Uri;
+import android.view.WindowManager.LayoutParams;
+
+import android.provider.Settings;
 
 import java.util.Calendar;
 import java.util.Timer;
@@ -21,6 +24,26 @@ public class MainActivity extends Activity  {
     private ClockView clockView;
     private ClockHelper clockHelper;
 
+    final private int lightLevel = 1;
+    private int originalLightLevel = 100;
+
+    protected int getBrightness() {
+        int brightnessValue = Settings.System.getInt(
+                getApplicationContext().getContentResolver(),
+                Settings.System.SCREEN_BRIGHTNESS,
+                0
+        );
+        return brightnessValue;
+    }
+
+    protected void setBrightness(int brightnessLevel) {
+        Settings.System.putInt(
+                getApplicationContext().getContentResolver(),
+                Settings.System.SCREEN_BRIGHTNESS,
+                brightnessLevel
+        );
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,12 +51,21 @@ public class MainActivity extends Activity  {
         final TextView timeView = findViewById(R.id.tjClockTextView);
         final TextView ampmView = findViewById(R.id.tjClockAmPmView);
         viewFlipper = findViewById(R.id.viewflipper);
-
-        getWindow().setDimAmount(0.9f);
+        getWindow().addFlags(LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         clockView = findViewById(R.id.clockView);
         clockHelper = new ClockHelper(clockView);
         clockHelper.start();
+
+        if (Settings.System.canWrite(getApplicationContext())) {
+            originalLightLevel = getBrightness();
+            setBrightness(lightLevel);
+        } else {
+            Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_WRITE_SETTINGS);
+            intent.setData(Uri.parse("package:" + this.getPackageName()));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
 
         TimerTask repeatedTask = new TimerTask() {
             public void run() {
@@ -51,6 +83,24 @@ public class MainActivity extends Activity  {
         long delay  = 1000L; // delay 1 sec
         long period = 1000L; // refresh every sec
         timer.scheduleAtFixedRate(repeatedTask, delay, period);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setBrightness(lightLevel);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        setBrightness(originalLightLevel);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        setBrightness(originalLightLevel);
     }
 
     // Using the following method, we will handle all screen swaps.
